@@ -2,10 +2,12 @@ package edu.eci.dosw.oficioya.service;
  
 import org.springframework.stereotype.Service;
  
-import edu.eci.dosw.oficioya.model.User;
+import edu.eci.dosw.oficioya.model.UserModel;
 import edu.eci.dosw.oficioya.model.Worker;
 import edu.eci.dosw.oficioya.model.Disponibilidad;
- 
+import edu.eci.dosw.oficioya.mapper.UserMapper;
+import edu.eci.dosw.oficioya.repository.UserRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +21,16 @@ import org.slf4j.LoggerFactory;
 @Service
 public class WorkerService {
  
-    private final List<User> users = new ArrayList<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+    //private final List<User> users = new ArrayList<>();
+    //private final AtomicLong idGenerator = new AtomicLong(1);
     private static final Logger log = LoggerFactory.getLogger(WorkerService.class);
+    private final UserMapper userMapper;
+    private final UserRepository userRepository;
  
-    public WorkerService() {
+    public WorkerService(UserMapper userMapper, UserRepository userRepository) {
+        this.userMapper = userMapper;
+        this.userRepository = userRepository;
+
         User demo1 = new User();
         demo1.setId(String.valueOf(idGenerator.getAndIncrement()));
         demo1.setNombre("Carlos Mendoza");
@@ -47,14 +54,19 @@ public class WorkerService {
         worker2.setOficioPrincipal("Electricista");
         worker2.setDisponibilidad(Disponibilidad.ACTIVO);
         demo2.setWorker(worker2);
- 
+        
+        userRepository.save(userMapper.toEntity(demo1));
+        userRepository.save(userMapper.toEntity(demo2));
+        /* 
         users.add(demo1);
         users.add(demo2);
+        */
     }
  
     public List<User> findAll() {
         log.debug("Encontrando todos los usuarios");
-        return new ArrayList<>(users);
+        return userRepository.findAll().map(userMapper::toModel).
+                orElseThrow(() -> new RuntimeException("No hay usuarios"));
     }
  
     public Optional<User> findById(String id) {
