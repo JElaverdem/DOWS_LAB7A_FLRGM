@@ -1,34 +1,41 @@
 package edu.eci.dosw.oficioya.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import java.math.BigDecimal;
+import java.util.List;
 
+@Entity
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
-    
-    @Id 
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
-    @NotBlank 
-    @Column(nullable = false, length = 50)
+    @NotBlank
+    @Column(nullable = false)
     private String name;
 
-    @NotBlank 
-    @Column(nullable = false, length = 100)
-    private String correo;
+    @Column(columnDefinition = "json")
+    private String photo;
 
-    @NotBlank 
-    @Column(nullable = false)
-    private Long telefono;
+    @Email
+    @NotBlank
+    @Column(nullable = false, length = 150)
+    private String email;
 
-    @NotBlank 
-    @Column(nullable = true, length = 20)
-    private String suscripcionId;
+    @NotBlank
+    @Column(nullable = false, length = 15)
+    private String phone;
 
-    public User(){
+    @Column(name = "rating")
+    private Double rating;
 
-    }
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "subscription_id")
+    private UserSubscription subscription;
 
-    
 }
