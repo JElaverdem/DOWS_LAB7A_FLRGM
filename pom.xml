@@ -30,7 +30,11 @@
   </properties>
 
   <dependencies>
+<<<<<<< HEAD
+    <!-- Web -->
+=======
       <!-- Web -->
+>>>>>>> d43bf75119d2da1125c4789fc0cce97107d7dc9d
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
@@ -68,6 +72,10 @@
         <artifactId>spring-boot-starter-test</artifactId>
         <scope>test</scope>
     </dependency>
+<<<<<<< HEAD
+
+=======
+>>>>>>> d43bf75119d2da1125c4789fc0cce97107d7dc9d
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
