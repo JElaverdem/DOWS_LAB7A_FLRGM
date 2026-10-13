@@ -1,7 +1,12 @@
 package edu.eci.dosw.oficioya.entity;
 
+import edu.eci.dosw.oficioya.entity.Worker;
+import edu.eci.dosw.oficioya.entity.Contractor;
+import edu.eci.dosw.oficioya.entity.enums.RequestState;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review")
