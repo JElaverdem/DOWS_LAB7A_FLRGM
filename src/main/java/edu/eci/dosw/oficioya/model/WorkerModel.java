@@ -6,21 +6,21 @@ import java.util.ArrayList;
  * Representa el rol de trabajador de un usuario dentro del sistema OficioYa.
  * Contiene la información relacionada con el oficio que ofrece.
  */
-public class Worker {
+public class WorkerModel {
 
     private String oficioPrincipal;
-    private ArrayList<String> oficiosSecundarios;
-    private ArrayList<String> cobertura;
-    private int tarifa;
-    private Disponibilidad disponibilidad;
+    //private ArrayList<String> oficiosSecundarios;
+    //private ArrayList<String> cobertura;
+    private Long tarifa;
+    private AvailabilityModel disponibilidad;
     private int trabajosCompletados;
-    private ArrayList<String> galeriaTrabajos;
+    //private ArrayList<String> galeriaTrabajos;
 
-    public Worker() {
-        this.oficiosSecundarios = new ArrayList<>();
-        this.cobertura = new ArrayList<>();
-        this.galeriaTrabajos = new ArrayList<>();
-        this.disponibilidad = Disponibilidad.ACTIVO;
+    public WorkerModel() {
+        //this.oficiosSecundarios = new ArrayList<>();
+        //this.cobertura = new ArrayList<>();
+        //this.galeriaTrabajos = new ArrayList<>();
+        this.disponibilidad = AvailabilityModel.ACTIVE;
         this.trabajosCompletados = 0;
     }
 
@@ -31,7 +31,7 @@ public class Worker {
     public void setOficioPrincipal(String oficioPrincipal) {
         this.oficioPrincipal = oficioPrincipal;
     }
-
+    /* 
     public ArrayList<String> getOficiosSecundarios() {
         return oficiosSecundarios;
     }
@@ -47,20 +47,20 @@ public class Worker {
     public void setCobertura(ArrayList<String> cobertura) {
         this.cobertura = cobertura;
     }
-
-    public int getTarifa() {
+    */
+    public Long getTarifa() {
         return tarifa;
     }
 
-    public void setTarifa(int tarifa) {
+    public void setTarifa(Long tarifa) {
         this.tarifa = tarifa;
     }
 
-    public Disponibilidad getDisponibilidad() {
+    public AvailabilityModel getDisponibilidad() {
         return disponibilidad;
     }
 
-    public void setDisponibilidad(Disponibilidad disponibilidad) {
+    public void setDisponibilidad(AvailabilityModel disponibilidad) {
         this.disponibilidad = disponibilidad;
     }
 
@@ -71,7 +71,7 @@ public class Worker {
     public void setTrabajosCompletados(int trabajosCompletados) {
         this.trabajosCompletados = trabajosCompletados;
     }
-
+    /*
     public ArrayList<String> getGaleriaTrabajos() {
         return galeriaTrabajos;
     }
@@ -79,4 +79,5 @@ public class Worker {
     public void setGaleriaTrabajos(ArrayList<String> galeriaTrabajos) {
         this.galeriaTrabajos = galeriaTrabajos;
     }
+    */
 }

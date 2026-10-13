@@ -20,7 +20,35 @@ public class UserSubscription {
 
     @ManyToOne
     @JoinColumn(name = "plan_name")
-    private SubscriptionPlanEntity plan; // FK hacia subscription_plan[cite: 1]
+    private SubscriptionPlan plan; // FK hacia subscription_plan[cite: 1]
 
-    // Getters y Setters...
+    public Long getId(){
+        return this.id;
+    }
+    public void setId(Long newId){
+        this.id = newId;
+    }
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public SubscriptionPlan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(SubscriptionPlan plan) {
+        this.plan = plan;
+    }
 }

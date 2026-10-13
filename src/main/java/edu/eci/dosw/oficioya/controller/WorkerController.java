@@ -1,8 +1,8 @@
 package edu.eci.dosw.oficioya.controller;
 
 import edu.eci.dosw.oficioya.dto.LoginDTO;
-import edu.eci.dosw.oficioya.model.Disponibilidad;
-import edu.eci.dosw.oficioya.model.User;
+import edu.eci.dosw.oficioya.model.AvailabilityModel;
+import edu.eci.dosw.oficioya.model.UserModel;
 import edu.eci.dosw.oficioya.service.WorkerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +32,7 @@ public class WorkerController {
     // aca esta el endpoint GET que devuelve la lista completa de usuarios con rol de trabajador
     @GetMapping
     @Operation(summary = "Listar todos los trabajadores", description = "Obtiene una lista de todos los usuarios registrados con rol de trabajador en el sistema.")
-    public ResponseEntity<List<User>> getAll() {
+    public ResponseEntity<List<UserModel>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(workerService.findAll());
     }
 
@@ -42,8 +42,8 @@ public class WorkerController {
     // aca esta el endpoint GET que busca y retorna un único trabajador usando el ID de la URL
     @GetMapping("/{id}")
     @Operation(summary = "Obtener un trabajador por ID", description = "Busca y retorna los detalles de un trabajador específico mediante su identificador único.")
-    public ResponseEntity<?> getById(@PathVariable String id) {
-        Optional<User> user = workerService.findById(id);
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        Optional<UserModel> user = workerService.findById(id);
         if (user.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(user.get());
         }
@@ -58,8 +58,8 @@ public class WorkerController {
     // aca esta el endpoint POST que recibe un JSON para crear un trabajador nuevo y le asigna el estado ACTIVO
     @PostMapping
     @Operation(summary = "Crear un nuevo trabajador", description = "Registra un trabajador. Valida campos obligatorios y asigna el estado ACTIVO por defecto.")
-    public ResponseEntity<?> create(@RequestBody User user) {
-        Optional<User> nuevo = workerService.create(user);
+    public ResponseEntity<?> create(@RequestBody UserModel user) {
+        Optional<UserModel> nuevo = workerService.create(user);
 
         if (nuevo.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevo.get());
@@ -76,19 +76,19 @@ public class WorkerController {
     // aca esta el endpoint PUT que actualiza los datos del trabajador validando primero que no esté inactivo
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar un trabajador", description = "Modifica los datos de un trabajador existente, siempre y cuando no se encuentre en estado DESACTIVADO.")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody User userData) {
-        Optional<User> existente = workerService.findById(id);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UserModel userData) {
+        Optional<UserModel> existente = workerService.findById(id);
 
         if (existente.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trabajador no encontrado");
         }
 
-        if (existente.get().getWorker().getDisponibilidad() == Disponibilidad.DESACTIVADO) {
+        if (existente.get().getWorker().getDisponibilidad() == AvailabilityModel.DEACTIVATED) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                     .body("No se puede modificar la información de un trabajador inactivo.");
         }
 
-        Optional<User> actualizado = workerService.update(id, userData);
+        Optional<UserModel> actualizado = workerService.update(id, userData);
 
         if (actualizado.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(actualizado.get());
@@ -104,8 +104,8 @@ public class WorkerController {
     // aca esta el endpoint PATCH que hace el borrado lógico cambiando el estado a DESACTIVADO en lugar de hacer un DELETE real
     @PatchMapping("/{id}/inactivar")
     @Operation(summary = "Inactivar un trabajador (Soft Delete)", description = "Cambia el estado de disponibilidad de un trabajador a DESACTIVADO en lugar de eliminarlo de la base de datos.")
-    public ResponseEntity<?> inactivar(@PathVariable String id) {
-        Optional<User> inactivado = workerService.inactivar(id);
+    public ResponseEntity<?> inactivar(@PathVariable Long id) {
+        Optional<UserModel> inactivado = workerService.inactivar(id);
 
         if (inactivado.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(inactivado.get());
@@ -125,7 +125,7 @@ public class WorkerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Correo y contraseña son obligatorios");
         }
 
-        Optional<User> user = workerService.autenticar(loginDTO.getCorreo(), loginDTO.getContrasena());
+        Optional<UserModel> user = workerService.autenticar(loginDTO.getCorreo(), loginDTO.getContrasena());
 
         if (user.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(user.get());

@@ -27,6 +27,7 @@
     <sonar.projectName>Oficio Ya Lab 6</sonar.projectName>
     <sonar.host.url>http://localhost:9000</sonar.host.url>
     <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <mapstruct.version>1.6.3</mapstruct.version>
   </properties>
 
   <dependencies>
@@ -87,13 +88,13 @@
     <groupId>org.springdoc</groupId>
     <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
     <version>2.6.0</version>
+    </dependency>
 
     <dependency>
         <groupId>org.mapstruct</groupId>
         <artifactId>mapstruct</artifactId>
         <version>${mapstruct.version}</version>
     </dependency>
-</dependency>
   </dependencies>
 
   <build>

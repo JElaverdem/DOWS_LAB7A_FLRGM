@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Representa a un trabajador especializado en el cuidado de mascotas.
  */
-public class PetCareTaker extends Worker {
+public class PetCareTaker extends WorkerModel {
 
     private ArrayList<String> atiende;
 

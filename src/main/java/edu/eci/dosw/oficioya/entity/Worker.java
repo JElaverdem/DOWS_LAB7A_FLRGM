@@ -8,36 +8,53 @@ import java.util.List;
 @Entity
 @Table(name = "Worker")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Worker extends User {
+public class Worker{
 
     @NotBlank
     @Column(name = "main_trade", nullable = false, length = 200)
-    private String mainTrade;
+    private String oficioPrincipal;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "availability_state", nullable = false, length = 20)
-    private Availability availabilityState;
+    private Availability disponibilidad;
 
     @NotNull
     @Column(nullable = false)
-    private Long rate;
+    private Long tarifa;
 
     @NotNull
     @Column(name = "completed_jobs", nullable = false)
-    private Integer completedJobs;
+    private Integer trabajosCompletados;
 
-    public Worker() {}
+    public void setOficioPrincipal(String newOficio){
+        this.oficioPrincipal = newOficio;
+    }
 
-    public String getMainTrade() { return mainTrade; }
-    public void setMainTrade(String mainTrade) { this.mainTrade = mainTrade; }
+    public String getOficioPrincipal(){
+        return this.oficioPrincipal;
+    }
 
-    public Availability getAvailabilityState() { return availabilityState; }
-    public void setAvailabilityState(Availability availabilityState) { this.availabilityState = availabilityState; }
+    public void setDisponibilidad(Availability dis){
+        this.disponibilidad = dis;
+    }
 
-    public Long getRate() { return rate; }
-    public void setRate(Long rate) { this.rate = rate; }
+    public Availability getDisponibilidad(){
+        return this.disponibilidad;
+    }
 
-    public Integer getCompletedJobs() { return completedJobs; }
-    public void setCompletedJobs(Integer completedJobs) { this.completedJobs = completedJobs; }
+    public void setTarifa(Long tf){
+        this.tarifa = tf;
+    }
 
+    public Long getTarifa(){
+        return this.tarifa;
+    }
+
+    public void setTrabajosCompletados(Integer tc){
+        this.trabajosCompletados = tc;
+    }
+
+    public Integer getTrabajosCompletados(){
+        return this.trabajosCompletados;
+    }
 }
