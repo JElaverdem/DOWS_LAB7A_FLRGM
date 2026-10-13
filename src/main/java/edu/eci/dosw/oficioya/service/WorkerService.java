@@ -71,9 +71,8 @@ public class WorkerService {
  
     public Optional<User> findById(String id) {
         log.debug("Encontrando al usuario con id: {}",id);
-        return users.stream()
-                .filter(u -> u.getId().equals(id))
-                .findFirst();
+        return userRepository.findById(id).map(userMapper::toModel).
+                orElseThrow(() -> new RuntimeException("No hay usuarios"));
     }
  
     /**
@@ -89,7 +88,9 @@ public class WorkerService {
         log.info("El usuario tiene los datos obligatorios");
         user.setId(String.valueOf(idGenerator.getAndIncrement()));
         user.getWorker().setDisponibilidad(Disponibilidad.ACTIVO);
-        users.add(user);
+
+        userRepository.save(userMapper.toEntity(user));
+        //users.add(user);
         log.info("Se ha creado el nuevo worker con id: {}",user.getId());
         return Optional.of(user);
     }
@@ -106,8 +107,10 @@ public class WorkerService {
             log.info("Los nuevos datos no están completos");
             return Optional.empty();
         }
-        for (User current : users) {
-            if (current.getId().equals(id)) {
+        
+        User current = userMapper.toModel(userRepository.findById(id));
+        
+        if (current != null){
                 log.info("El usuario con el id: {} fue encontrado",id);
                 if (current.getWorker().getDisponibilidad() == Disponibilidad.DESACTIVADO) {
                     log.info("El usuario tiene una disponibilidad que le impide actualizar sus datos");
@@ -119,14 +122,17 @@ public class WorkerService {
                 current.setTelefono(userData.getTelefono());
                 current.setContrasena(userData.getContrasena());
                 current.getWorker().setOficioPrincipal(userData.getWorker().getOficioPrincipal());
+
+                userRepository.save(userMapper.toEntity(current));
                 log.info("Se realizó la actualización completa de los datos");
                 return Optional.of(current);
+            
             }
-        }
         log.info("No fue encontrado el usuario con id: {}",id);
         return Optional.empty();
     }
- 
+    
+    //Falta implementar repositorio
     public Optional<User> inactivar(String id) {
         log.debug("Desactivar el usuario con id: {}",id);
         for (User user : users) {
@@ -143,7 +149,9 @@ public class WorkerService {
  
     public Optional<User> autenticar(String correo, String contrasena) {
         log.debug("Se busca autenticar a un usuario con correo: {}",correo);
-        return users.stream()
+        ArrayList<User> encontrados = userRepository.findByEmail(correo).map(userMapper::toModel);
+
+        return encontrados.stream()
                 .filter(u -> u.getCorreo().equalsIgnoreCase(correo) && u.getContrasena().equals(contrasena))
                 .findFirst();
     }

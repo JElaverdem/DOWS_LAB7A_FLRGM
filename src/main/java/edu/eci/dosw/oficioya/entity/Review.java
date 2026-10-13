@@ -1,5 +1,7 @@
 package edu.eci.dosw.oficioya.entity;
 
+import edu.eci.dosw.oficioya.entity.Worker;
+import edu.eci.dosw.oficioya.entity.Contractor;
 import edu.eci.dosw.oficioya.entity.enums.RequestState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
