@@ -42,7 +42,7 @@ public class WorkerController {
     // aca esta el endpoint GET que busca y retorna un único trabajador usando el ID de la URL
     @GetMapping("/{id}")
     @Operation(summary = "Obtener un trabajador por ID", description = "Busca y retorna los detalles de un trabajador específico mediante su identificador único.")
-    public ResponseEntity<?> getById(@PathVariable String id) {
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         Optional<UserModel> user = workerService.findById(id);
         if (user.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(user.get());
@@ -76,7 +76,7 @@ public class WorkerController {
     // aca esta el endpoint PUT que actualiza los datos del trabajador validando primero que no esté inactivo
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar un trabajador", description = "Modifica los datos de un trabajador existente, siempre y cuando no se encuentre en estado DESACTIVADO.")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody UserModel userData) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UserModel userData) {
         Optional<UserModel> existente = workerService.findById(id);
 
         if (existente.isEmpty()) {
@@ -104,7 +104,7 @@ public class WorkerController {
     // aca esta el endpoint PATCH que hace el borrado lógico cambiando el estado a DESACTIVADO en lugar de hacer un DELETE real
     @PatchMapping("/{id}/inactivar")
     @Operation(summary = "Inactivar un trabajador (Soft Delete)", description = "Cambia el estado de disponibilidad de un trabajador a DESACTIVADO en lugar de eliminarlo de la base de datos.")
-    public ResponseEntity<?> inactivar(@PathVariable String id) {
+    public ResponseEntity<?> inactivar(@PathVariable Long id) {
         Optional<UserModel> inactivado = workerService.inactivar(id);
 
         if (inactivado.isPresent()) {

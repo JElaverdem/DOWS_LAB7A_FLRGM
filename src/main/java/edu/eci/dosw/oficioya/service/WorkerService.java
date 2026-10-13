@@ -65,14 +65,13 @@ public class WorkerService {
  
     public List<UserModel> findAll() {
         log.debug("Encontrando todos los usuarios");
-        return userRepository.findAll().map(userMapper::toModel).
-                orElseThrow(() -> new RuntimeException("No hay usuarios"));
+        return userRepository.findAll().stream().map(userMapper::toModel).toList();
     }
  
-    public Optional<UserModel> findById(String id) {
+    public Optional<UserModel> findById(Long id) {
         log.debug("Encontrando al usuario con id: {}",id);
-        return userRepository.findById(id).map(userMapper::toModel).
-                orElseThrow(() -> new RuntimeException("No hay usuarios"));
+        return Optional.of(userRepository.findById(id).map(userMapper::toModel).
+                orElseThrow(() -> new RuntimeException("No hay usuarios")));
     }
  
     /**
@@ -101,16 +100,17 @@ public class WorkerService {
      * - el trabajador esta DESACTIVADO,
      * - o faltan campos obligatorios en los datos nuevos.
      */
-    public Optional<UserModel> update(String id, UserModel userData) {
+    public Optional<UserModel> update(Long id, UserModel userData) {
         log.debug("Actualizar un usuario con id {} a los datos de un usuario con id {} y nombre {}",id,userData.getId(),userData.getNombre());
         if (!tieneDatosObligatorios(userData)) {
             log.info("Los nuevos datos no están completos");
             return Optional.empty();
         }
         
-        UserModel current = userMapper.toModel(userRepository.findById(id));
+        Optional<UserModel> currentOp = userRepository.findById(id).map(userMapper::toModel);
         
-        if (current != null){
+        if (currentOp.isPresent()){
+                UserModel current = currentOp.orElse(null);
                 log.info("El usuario con el id: {} fue encontrado",id);
                 if (current.getWorker().getDisponibilidad() == AvailabilityModel.DEACTIVATED) {
                     log.info("El usuario tiene una disponibilidad que le impide actualizar sus datos");
@@ -132,10 +132,12 @@ public class WorkerService {
         return Optional.empty();
     }
     
-    public Optional<UserModel> inactivar(String id) {
+    public Optional<UserModel> inactivar(Long id) {
         log.debug("Desactivar el usuario con id: {}",id);
-        UserModel user = UserMapper.toModel(userRepository.findById(id));
-        if (user != null){
+        Optional<UserModel> userOp = userRepository.findById(id).map(userMapper::toModel);
+        
+        if (userOp.isPresent()){
+                UserModel user = userOp.orElse(null);
                 log.info("El usuario con id: {} fue encontrado",id);
                 user.getWorker().setDisponibilidad(AvailabilityModel.DEACTIVATED);
                 userRepository.save(userMapper.toEntity(user));
@@ -148,11 +150,15 @@ public class WorkerService {
  
     public Optional<UserModel> autenticar(String correo, String contrasena) {
         log.debug("Se busca autenticar a un usuario con correo: {}",correo);
-        ArrayList<UserModel> encontrados = userRepository.findByEmail(correo).map(userMapper::toModel);
-
+        Optional<UserModel> encontrados = userRepository.findByEmail(correo).map(userMapper::toModel);
+        if (encontrados.isPresent()){
         return encontrados.stream()
                 .filter(u -> u.getCorreo().equalsIgnoreCase(correo) && u.getContrasena().equals(contrasena))
                 .findFirst();
+        }
+        else{
+            return Optional.empty();
+        }
     }
  
     private boolean tieneDatosObligatorios(UserModel user) {
