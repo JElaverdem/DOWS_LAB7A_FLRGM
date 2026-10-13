@@ -102,4 +102,5 @@ public class Request {
     public void setUsername_id_receiver(Long newId){
         this.username_id_receiver = newId;
     }
+    
 }
