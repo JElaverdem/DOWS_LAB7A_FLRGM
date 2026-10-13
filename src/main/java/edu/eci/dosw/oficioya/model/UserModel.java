@@ -6,32 +6,32 @@ import java.util.ArrayList;
  * Representa un usuario del sistema OficioYa.
  * Un usuario puede tener asociado un rol de Worker, Contractor y/o Administrator.
  */
-public class User {
+public class UserModel {
 
-    private String id;
+    private Long id;
     private String nombre;
     private String foto;
     private String correo;
     private String telefono;
     private String contrasena;
     private double calificacion;
-    private Suscripcion suscripcion;
-    private ArrayList<Review> resenasObtenidas;
-    private ArrayList<Request> requests;
-    private Contractor contractor;
-    private Worker worker;
-    private Administrator admin;
+    private UserSubscriptionModel suscripcion;
+    //private ArrayList<Review> resenasObtenidas;
+    //private ArrayList<RequestModel> requests;
+    private ContractorModel contractor;
+    private WorkerModel worker;
+    private AdministratorModel admin;
 
-    public User() {
-        this.resenasObtenidas = new ArrayList<>();
-        this.requests = new ArrayList<>();
+    public UserModel() {
+        //this.resenasObtenidas = new ArrayList<>();
+        //this.requests = new ArrayList<>();
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -83,14 +83,14 @@ public class User {
         this.calificacion = calificacion;
     }
 
-    public Suscripcion getSuscripcion() {
+    public UserSubscriptionModel getSuscripcion() {
         return suscripcion;
     }
 
-    public void setSuscripcion(Suscripcion suscripcion) {
+    public void setSuscripcion(UserSubscriptionModel suscripcion) {
         this.suscripcion = suscripcion;
     }
-
+    /*
     public ArrayList<Review> getResenasObtenidas() {
         return resenasObtenidas;
     }
@@ -99,35 +99,36 @@ public class User {
         this.resenasObtenidas = resenasObtenidas;
     }
 
-    public ArrayList<Request> getRequests() {
+    public ArrayList<RequestModel> getRequests() {
         return requests;
     }
 
-    public void setRequests(ArrayList<Request> requests) {
+    public void setRequests(ArrayList<RequestModel> requests) {
         this.requests = requests;
     }
+    */
 
-    public Contractor getContractor() {
+    public ContractorModel getContractor() {
         return contractor;
     }
 
-    public void setContractor(Contractor contractor) {
+    public void setContractor(ContractorModel contractor) {
         this.contractor = contractor;
     }
 
-    public Worker getWorker() {
+    public WorkerModel getWorker() {
         return worker;
     }
 
-    public void setWorker(Worker worker) {
+    public void setWorker(WorkerModel worker) {
         this.worker = worker;
     }
 
-    public Administrator getAdmin() {
+    public AdministratorModel getAdmin() {
         return admin;
     }
 
-    public void setAdmin(Administrator admin) {
+    public void setAdmin(AdministratorModel admin) {
         this.admin = admin;
     }
 }

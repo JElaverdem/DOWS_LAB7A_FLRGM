@@ -3,8 +3,8 @@ package edu.eci.dosw.oficioya.service;
 import org.springframework.stereotype.Service;
  
 import edu.eci.dosw.oficioya.model.UserModel;
-import edu.eci.dosw.oficioya.model.Worker;
-import edu.eci.dosw.oficioya.model.Disponibilidad;
+import edu.eci.dosw.oficioya.model.WorkerModel;
+import edu.eci.dosw.oficioya.model.AvailabilityModel;
 import edu.eci.dosw.oficioya.mapper.UserMapper;
 import edu.eci.dosw.oficioya.repository.UserRepository;
 
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 public class WorkerService {
  
     //private final List<User> users = new ArrayList<>();
-    //private final AtomicLong idGenerator = new AtomicLong(1);
+    private final AtomicLong idGenerator = new AtomicLong(1);
     private static final Logger log = LoggerFactory.getLogger(WorkerService.class);
     private final UserMapper userMapper;
     private final UserRepository userRepository;
@@ -31,28 +31,28 @@ public class WorkerService {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
 
-        User demo1 = new User();
-        demo1.setId(String.valueOf(idGenerator.getAndIncrement()));
+        UserModel demo1 = new UserModel();
+        demo1.setId(idGenerator.getAndIncrement());
         demo1.setNombre("Carlos Mendoza");
         demo1.setCorreo("carlos@ejemplo.com");
         demo1.setTelefono("3001234567");
         demo1.setContrasena("Pass1234");
  
-        Worker worker1 = new Worker();
+        WorkerModel worker1 = new WorkerModel();
         worker1.setOficioPrincipal("Plomero");
-        worker1.setDisponibilidad(Disponibilidad.ACTIVO);
+        worker1.setDisponibilidad(AvailabilityModel.ACTIVE);
         demo1.setWorker(worker1);
  
-        User demo2 = new User();
-        demo2.setId(String.valueOf(idGenerator.getAndIncrement()));
+        UserModel demo2 = new UserModel();
+        demo2.setId(idGenerator.getAndIncrement());
         demo2.setNombre("Ana Gómez");
         demo2.setCorreo("ana@ejemplo.com");
         demo2.setTelefono("3109876543");
         demo2.setContrasena("Pass5678");
  
-        Worker worker2 = new Worker();
+        WorkerModel worker2 = new WorkerModel();
         worker2.setOficioPrincipal("Electricista");
-        worker2.setDisponibilidad(Disponibilidad.ACTIVO);
+        worker2.setDisponibilidad(AvailabilityModel.ACTIVE);
         demo2.setWorker(worker2);
         
         userRepository.save(userMapper.toEntity(demo1));
@@ -63,13 +63,13 @@ public class WorkerService {
         */
     }
  
-    public List<User> findAll() {
+    public List<UserModel> findAll() {
         log.debug("Encontrando todos los usuarios");
         return userRepository.findAll().map(userMapper::toModel).
                 orElseThrow(() -> new RuntimeException("No hay usuarios"));
     }
  
-    public Optional<User> findById(String id) {
+    public Optional<UserModel> findById(String id) {
         log.debug("Encontrando al usuario con id: {}",id);
         return userRepository.findById(id).map(userMapper::toModel).
                 orElseThrow(() -> new RuntimeException("No hay usuarios"));
@@ -79,15 +79,15 @@ public class WorkerService {
      * Crea un nuevo trabajador. Devuelve Optional.empty() si faltan
      * campos obligatorios (nombre, correo, telefono, oficio principal o contrasena).
      */
-    public Optional<User> create(User user) {
+    public Optional<UserModel> create(UserModel user) {
         log.debug("Creando un nuevo trabajador con nombre: {}",user.getNombre());
         if (!tieneDatosObligatorios(user)) {
             log.info("El usuario no tiene los datos obligatorios");
             return Optional.empty();
         }
         log.info("El usuario tiene los datos obligatorios");
-        user.setId(String.valueOf(idGenerator.getAndIncrement()));
-        user.getWorker().setDisponibilidad(Disponibilidad.ACTIVO);
+        user.setId(idGenerator.getAndIncrement());
+        user.getWorker().setDisponibilidad(AvailabilityModel.ACTIVE);
 
         userRepository.save(userMapper.toEntity(user));
         //users.add(user);
@@ -101,18 +101,18 @@ public class WorkerService {
      * - el trabajador esta DESACTIVADO,
      * - o faltan campos obligatorios en los datos nuevos.
      */
-    public Optional<User> update(String id, User userData) {
+    public Optional<UserModel> update(String id, UserModel userData) {
         log.debug("Actualizar un usuario con id {} a los datos de un usuario con id {} y nombre {}",id,userData.getId(),userData.getNombre());
         if (!tieneDatosObligatorios(userData)) {
             log.info("Los nuevos datos no están completos");
             return Optional.empty();
         }
         
-        User current = userMapper.toModel(userRepository.findById(id));
+        UserModel current = userMapper.toModel(userRepository.findById(id));
         
         if (current != null){
                 log.info("El usuario con el id: {} fue encontrado",id);
-                if (current.getWorker().getDisponibilidad() == Disponibilidad.DESACTIVADO) {
+                if (current.getWorker().getDisponibilidad() == AvailabilityModel.DEACTIVATED) {
                     log.info("El usuario tiene una disponibilidad que le impide actualizar sus datos");
                     return Optional.empty();
                 }
@@ -132,31 +132,30 @@ public class WorkerService {
         return Optional.empty();
     }
     
-    //Falta implementar repositorio
-    public Optional<User> inactivar(String id) {
+    public Optional<UserModel> inactivar(String id) {
         log.debug("Desactivar el usuario con id: {}",id);
-        for (User user : users) {
-            if (user.getId().equals(id)) {
+        UserModel user = UserMapper.toModel(userRepository.findById(id));
+        if (user != null){
                 log.info("El usuario con id: {} fue encontrado",id);
-                user.getWorker().setDisponibilidad(Disponibilidad.DESACTIVADO);
+                user.getWorker().setDisponibilidad(AvailabilityModel.DEACTIVATED);
+                userRepository.save(userMapper.toEntity(user));
                 log.info("Se actualizó correctamente la disponibilidad del usuario");
                 return Optional.of(user);
-            }
         }
         log.info("No se encontró el usuario con id: {}",id);
         return Optional.empty();
     }
  
-    public Optional<User> autenticar(String correo, String contrasena) {
+    public Optional<UserModel> autenticar(String correo, String contrasena) {
         log.debug("Se busca autenticar a un usuario con correo: {}",correo);
-        ArrayList<User> encontrados = userRepository.findByEmail(correo).map(userMapper::toModel);
+        ArrayList<UserModel> encontrados = userRepository.findByEmail(correo).map(userMapper::toModel);
 
         return encontrados.stream()
                 .filter(u -> u.getCorreo().equalsIgnoreCase(correo) && u.getContrasena().equals(contrasena))
                 .findFirst();
     }
  
-    private boolean tieneDatosObligatorios(User user) {
+    private boolean tieneDatosObligatorios(UserModel user) {
         log.debug("Identificar si el usuario ingresado tiene los datos requeridos para continuar el proceso.");
         if (user == null) {
             log.info("No se envió un usuario");

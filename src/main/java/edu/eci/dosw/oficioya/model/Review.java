@@ -5,18 +5,18 @@ package edu.eci.dosw.oficioya.model;
  */
 public class Review {
 
-    private User owner;
+    private UserModel owner;
     private String comentario;
     private double calificacionDada;
 
     public Review() {
     }
 
-    public User getOwner() {
+    public UserModel getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(UserModel owner) {
         this.owner = owner;
     }
 
