@@ -2,7 +2,7 @@ package edu.eci.dosw.oficioya.entity;
 
 import edu.eci.dosw.oficioya.entity.Worker;
 import edu.eci.dosw.oficioya.entity.Contractor;
-import edu.eci.dosw.oficioya.entity.RequestState;
+import edu.eci.dosw.oficioya.model.RequestStateModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

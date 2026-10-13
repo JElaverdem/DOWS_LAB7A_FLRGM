@@ -150,7 +150,7 @@ public class WorkerService {
  
     public Optional<UserModel> autenticar(String correo, String contrasena) {
         log.debug("Se busca autenticar a un usuario con correo: {}",correo);
-        Optional<UserModel> encontrados = userRepository.findByEmail(correo).map(userMapper::toModel);
+        Optional<UserModel> encontrados = userRepository.findByCorreo(correo).map(userMapper::toModel);
         if (encontrados.isPresent()){
         return encontrados.stream()
                 .filter(u -> u.getCorreo().equalsIgnoreCase(correo) && u.getContrasena().equals(contrasena))

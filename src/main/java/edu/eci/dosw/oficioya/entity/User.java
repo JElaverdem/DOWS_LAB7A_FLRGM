@@ -50,6 +50,9 @@ public class User {
     @OneToOne
     private Contractor contractor;
 
+    public User(){
+
+    }
     public Long getId() {
     return id;
     }

@@ -4,11 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import edu.eci.dosw.oficioya.model.AvailabilityModel;
 
 @Entity
 @Table(name = "Worker")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Worker{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank
     @Column(name = "main_trade", nullable = false, length = 200)
@@ -16,7 +20,7 @@ public class Worker{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "availability_state", nullable = false, length = 20)
-    private Availability disponibilidad;
+    private AvailabilityModel disponibilidad;
 
     @NotNull
     @Column(nullable = false)
@@ -26,6 +30,13 @@ public class Worker{
     @Column(name = "completed_jobs", nullable = false)
     private Integer trabajosCompletados;
 
+    public void setId(Long newD){
+        this.id = newD;
+    }
+
+    public Long getId(){
+        return this.id;
+    }
     public void setOficioPrincipal(String newOficio){
         this.oficioPrincipal = newOficio;
     }
@@ -34,11 +45,11 @@ public class Worker{
         return this.oficioPrincipal;
     }
 
-    public void setDisponibilidad(Availability dis){
+    public void setDisponibilidad(AvailabilityModel dis){
         this.disponibilidad = dis;
     }
 
-    public Availability getDisponibilidad(){
+    public AvailabilityModel getDisponibilidad(){
         return this.disponibilidad;
     }
 

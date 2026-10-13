@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Contiene la información relacionada con el oficio que ofrece.
  */
 public class WorkerModel {
-
+    private Long id;
     private String oficioPrincipal;
     //private ArrayList<String> oficiosSecundarios;
     //private ArrayList<String> cobertura;
@@ -23,7 +23,13 @@ public class WorkerModel {
         this.disponibilidad = AvailabilityModel.ACTIVE;
         this.trabajosCompletados = 0;
     }
+    public Long getId(){
+        return this.id;
+    }
 
+    public void setId(Long newId){
+        this.id = newId;
+    }
     public String getOficioPrincipal() {
         return oficioPrincipal;
     }

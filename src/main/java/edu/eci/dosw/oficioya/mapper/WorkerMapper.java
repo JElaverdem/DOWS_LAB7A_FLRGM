@@ -4,7 +4,7 @@ import edu.eci.dosw.oficioya.model.WorkerModel;
 import edu.eci.dosw.oficioya.entity.Worker;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = AvailabilityMapper.class)
+@Mapper(componentModel = "spring")
 public interface WorkerMapper {
     WorkerModel toModel(Worker worker);
     Worker toEntity(WorkerModel workerModel);
