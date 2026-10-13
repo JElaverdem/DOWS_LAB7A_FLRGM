@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Representa a un trabajador especializado en la enseñanza de materias.
  */
-public class Teacher extends Worker {
+public class Teacher extends WorkerModel {
 
     private ArrayList<String> materias;
     private String nivel;

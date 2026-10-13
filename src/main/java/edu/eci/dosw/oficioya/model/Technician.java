@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Representa a un trabajador especializado en reparación técnica de equipos.
  */
-public class Technician extends Worker {
+public class Technician extends WorkerModel {
 
     private ArrayList<String> marcas;
     private ArrayList<String> equipos;

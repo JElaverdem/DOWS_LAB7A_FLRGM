@@ -4,18 +4,18 @@ import java.util.HashMap;
 
 public class OficioYa {
 
-    private HashMap<String, User> users;
+    private HashMap<String, UserModel> users;
     private LoggingStrategy loggingStrategy;
 
     public OficioYa() {
         this.users = new HashMap<>();
     }
 
-    public HashMap<String, User> getUsers() {
+    public HashMap<String, UserModel> getUsers() {
         return users;
     }
 
-    public void setUsers(HashMap<String, User> users) {
+    public void setUsers(HashMap<String, UserModel> users) {
         this.users = users;
     }
 
