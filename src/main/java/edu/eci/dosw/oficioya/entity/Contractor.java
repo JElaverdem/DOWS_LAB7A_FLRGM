@@ -7,5 +7,14 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "Contractor")
 public class Contractor{
-    // Hereda todo de User. Su PK será una FK hacia users según el diagrama.
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    public Long getId(){
+        return this.id;
+    }
+
+    public void setId(Long d){
+        this.id = d;
+    }
 }

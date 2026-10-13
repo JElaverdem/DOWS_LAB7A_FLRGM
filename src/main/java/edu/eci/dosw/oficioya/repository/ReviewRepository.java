@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     // Consulta derivada para buscar reseñas por encima de un rating específico[cite: 2]
-    List<Review> findByRatingGivenGreaterThanEqual(Double rating);
+    List<Review> findByRatingGivenGreaterThanEqual(Double ratingGiven);
 }

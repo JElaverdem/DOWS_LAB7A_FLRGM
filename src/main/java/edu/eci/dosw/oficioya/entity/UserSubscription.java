@@ -18,7 +18,7 @@ public class UserSubscription {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @ManyToOne
+    @Enumerated
     @JoinColumn(name = "plan_name")
     private SubscriptionPlan plan; // FK hacia subscription_plan[cite: 1]
 

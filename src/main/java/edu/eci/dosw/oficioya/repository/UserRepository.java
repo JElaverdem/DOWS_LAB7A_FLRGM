@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     // Consulta derivada por nombre
-    List<User> findByNameContainingIgnoreCase(String name);
+    List<User> findByNombreContainingIgnoreCase(String nombre);
     
-    Optional<User> findByEmail(String email);
+    Optional<User> findByCorreo(String correo);
 }
